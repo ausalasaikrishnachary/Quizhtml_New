@@ -345,7 +345,8 @@
             }
             
             $("#imptcmprntion").click(function () {
-                
+                console.log("triggered")
+                $("#DivLeft1").hide();
                 $("#DivRight").hide();
                 $("#play-bar").hide();
                 isFIBImplementation = false;
@@ -391,7 +392,7 @@
                     audioFile.currentTime = 0;
                 }
             });
-            $("#imtcmprntion").trigger("click");
+            $("#imptcmprntion").trigger("click");
 
             $("#imtVocabulary").click(function () {
                 isFIBImplementation = false;
@@ -614,6 +615,11 @@
                 }
 
             });
+
+
+            $("#Backbutton").click(function () {
+    window.location.href = 'index.html';
+});
 
             $("#Backbutton").click(function () {
                 isFIBImplementation = false;
@@ -4977,7 +4983,8 @@
     </div>
     <div class="main-content">
         <div class="container-full">
-            <div id="DivLeft" class="col-left">
+            <div id="DivLeft" class="col-left"></div>
+            <div id="DivLeft1" class="col-left">
                 <div id="D-left">
                     <a href="#" id="toggle4">Themes<span class="mob-menu-icon"><img
                                 src="images/nav-icon.png" /></span></a>
