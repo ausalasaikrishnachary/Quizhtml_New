@@ -87,38 +87,25 @@
       
       
 
-    <script>
-        // Define global variables to store the name and uid
-        var userName;
-        var userId;
+      <script>
+        // Function to fetch and display user info from localStorage
+        function displayStoredUserInfo() {
+            const name = localStorage.getItem('userName') || 'Guest';
+            const uid = localStorage.getItem('userId') || 'unknown';
 
-        // Function to get query parameters
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return params;
+            const userInfoElement = document.getElementById('greeting');
+            userInfoElement.textContent = `Hello, ${name}`;
         }
-
-        // Function to display name and uid
-        function displayUserInfo() {
-            const queryParams = getQueryParams();
-            const name = queryParams.get('name') || 'Guest'; // Default to 'Guest' if no name parameter is found
-            const uid = queryParams.get('uid') || 'unknown'; // Default to 'unknown' if no uid parameter is found
-            console.log("name=", name);
-            console.log("uid=", uid);
-            const greetingElement = document.getElementById('greeting');
-            greetingElement.textContent = `Hello, ${name}! `;
-
-            // Store the name and uid in the global variables
-            userName = name;
-            userId = uid;
-        }
-
-        // Call displayUserInfo on window load
-        window.onload = displayUserInfo;
 
         function handleLogout() {
-            window.location.href = 'http://localhost:3000/';
-        }
+        // Clear localStorage on logout
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
+        window.location.href = 'http://localhost:3000/';
+    }
+
+        // Call displayStoredUserInfo on window load
+        window.onload = displayStoredUserInfo;
     </script>
 
 

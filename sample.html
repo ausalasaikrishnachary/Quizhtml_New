@@ -87,39 +87,41 @@
 
 
 
-    <script>
-        // Define global variables to store the name and uid
-        var userName;
-        var userId;
+<script>
+    // Function to get query parameters
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return params;
+    }
 
-        // Function to get query parameters
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return params;
-        }
+    // Function to display name and uid
+    function displayUserInfo() {
+        const queryParams = getQueryParams();
+        const name = queryParams.get('name') || 'Guest'; // Default to 'Guest' if no name parameter is found
+        const uid = queryParams.get('uid') || 'unknown'; // Default to 'unknown' if no uid parameter is found
 
-        // Function to display name and uid
-        function displayUserInfo() {
-            const queryParams = getQueryParams();
-            const name = queryParams.get('name') || 'Guest'; // Default to 'Guest' if no name parameter is found
-            const uid = queryParams.get('uid') || 'unknown'; // Default to 'unknown' if no uid parameter is found
-            console.log("name=", name);
-            console.log("uid=", uid);
-            const greetingElement = document.getElementById('greeting');
-            greetingElement.textContent = `Hello, ${name}! `;
+        // Store the name and uid in localStorage
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userId', uid);
 
-            // Store the name and uid in the global variables
-            userName = name;
-            userId = uid;
-        }
+        console.log("name=", name);
+        console.log("uid=", uid);
+        const greetingElement = document.getElementById('greeting');
+        greetingElement.textContent = `Hello, ${name}! `;
+    }
 
-        // Call displayUserInfo on window load
-        window.onload = displayUserInfo;
+    // Call displayUserInfo on window load
+    window.onload = displayUserInfo;
 
-        function handleLogout() {
-            window.location.href = 'http://localhost:3000/';
-        }
-    </script>
+    function handleLogout() {
+        // Clear localStorage on logout
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
+        window.location.href = 'index.html';
+        window.location.href = 'Comprehension.html';
+    }
+</script>
+    
 
 
     <script type="text/javascript">
@@ -4917,7 +4919,7 @@
         <div class="container-full">
             <div class="logo-left"><a class="logo-brand" rel="external" href="#"><img alt="logo"
                         src="images/flow-english-logo.png"></a></div>
-            <!-- <div><h3 id="greeting"></h3> </div> -->
+            
             <div class="logo-right"><a class="logo-brand" rel="external" href="#"><img alt="logo"
                         src="images/chipper-sage-logo.png"></a></div>
             <h1 class="firstTitle">
@@ -4925,7 +4927,7 @@
                 -
                 <span class="secondTitle">Learner</span>
             </h1>
-            <!-- <h2 id="greeting"></h2>  -->
+            
         </div>
     </div>
     <div style="clear:both"></div>
