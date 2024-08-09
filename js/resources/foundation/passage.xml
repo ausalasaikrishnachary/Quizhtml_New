@@ -38,7 +38,7 @@
 
   <!-- Passage 2 begin -->
       
-  <Passage Stage="0" id="psge_2" AudioSource="Passage2.ogg" Passagetitle="The Fisherman" PassageGroupId="passage_2" img="p2.png" desc="Selvam is a {fisherman}~Person who fishes#. Early every morning, he gets into his boat and goes out to the sea to fish. He {throws} ~toss# his net into the sea and catches a lot of fish. Selvam sells the fish in the {market.}~Place to sell items# He has been doing this for many years. Many people like to buy fish from him."  BloomsTaxonomy="1,2,3" Use="L,P,T">
+  <!-- <Passage Stage="0" id="psge_2" AudioSource="Passage2.ogg" Passagetitle="The Fisherman" PassageGroupId="passage_2" img="p2.png" desc="Selvam is a {fisherman}~Person who fishes#. Early every morning, he gets into his boat and goes out to the sea to fish. He {throws} ~toss# his net into the sea and catches a lot of fish. Selvam sells the fish in the {market.}~Place to sell items# He has been doing this for many years. Many people like to buy fish from him."  BloomsTaxonomy="1,2,3" Use="L,P,T">
 
       <activity id="1" headerText="Rearrange the letters to make a meaningful word." impType="Spelling" correctoption="Selvam is a fisherman . Early every morning , he gets into his boat and goes out to the sea to fish. He throws his net into the sea and catches a lot of fish. Selvam sells the fish in the market . He has been doing this for many years . Many people like to buy fish from him." wordpositions="4,7,8,14,16,20,24,31,42,51,53,54,57"/>
 
@@ -57,7 +57,7 @@
 
      
         </activity>
-       </Passage>
+       </Passage> -->
 
  <!-- Passage 2  end -->
   
