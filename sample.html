@@ -87,41 +87,41 @@
 
 
 
-<script>
-    // Function to get query parameters
-    function getQueryParams() {
-        const params = new URLSearchParams(window.location.search);
-        return params;
-    }
+    <script>
+        // Function to get query parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return params;
+        }
 
-    // Function to display name and uid
-    function displayUserInfo() {
-        const queryParams = getQueryParams();
-        const name = queryParams.get('name') || 'Guest'; // Default to 'Guest' if no name parameter is found
-        const uid = queryParams.get('uid') || 'unknown'; // Default to 'unknown' if no uid parameter is found
+        // Function to display name and uid
+        function displayUserInfo() {
+            const queryParams = getQueryParams();
+            const name = queryParams.get('name') || 'Guest'; // Default to 'Guest' if no name parameter is found
+            const uid = queryParams.get('uid') || 'unknown'; // Default to 'unknown' if no uid parameter is found
 
-        // Store the name and uid in localStorage
-        localStorage.setItem('userName', name);
-        localStorage.setItem('userId', uid);
+            // Store the name and uid in localStorage
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userId', uid);
 
-        console.log("name=", name);
-        console.log("uid=", uid);
-        const greetingElement = document.getElementById('greeting');
-        greetingElement.textContent = `Hello, ${name}! `;
-    }
+            console.log("name=", name);
+            console.log("uid=", uid);
+            const greetingElement = document.getElementById('greeting');
+            greetingElement.textContent = `Hello, ${name}! `;
+        }
 
-    // Call displayUserInfo on window load
-    window.onload = displayUserInfo;
+        // Call displayUserInfo on window load
+        window.onload = displayUserInfo;
 
-    function handleLogout() {
-        // Clear localStorage on logout
-        localStorage.removeItem('userName');
-        localStorage.removeItem('userId');
-        window.location.href = 'index.html';
-        window.location.href = 'Comprehension.html';
-    }
-</script>
-    
+        function handleLogout() {
+            // Clear localStorage on logout
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userId');
+            window.location.href = 'index.html';
+            window.location.href = 'Comprehension.html';
+        }
+    </script>
+
 
 
     <script type="text/javascript">
@@ -320,8 +320,16 @@
             if (width <= 1024) {
 
                 var audioplay = true;
+
+                // Automatically start the audio when the page loads
+                audioFile.play();
+                audioplay = false;
+
+                $("#pauseContainer").css("display", "block");
+                $("#playContainer").css("display", "none");
+
+                // Play/Pause functionality
                 $(document).on('click', '.playpausebtn', function () {
-                    //$(".imgplay").click(function () {
                     if (audioplay) {
                         audioFile.play();
                         audioplay = false;
@@ -329,8 +337,7 @@
                         $("#pauseContainer").css("display", "block");
                         $("#playContainer").css("display", "none");
 
-                    }
-                    else {
+                    } else {
                         audioFile.pause();
                         audioplay = true;
 
@@ -766,18 +773,15 @@
 
 
             $("#imgmute").click(function () {
-
                 if (!audioFile.muted) {
                     audioFile.muted = true;
 
-
                     $("#imgmute").attr("src", "images/mute.png");
                     $("#imgmute").attr("title", "Unmute Sound");
-                }
-                else {
+                } else {
                     audioFile.muted = false;
 
-                    $("#imgmute").attr("src", "images/unmute.png")
+                    $("#imgmute").attr("src", "images/unmute.png");
                     $("#imgmute").attr("title", "Mute Sound");
                 }
             });
@@ -4868,9 +4872,9 @@
         }
 
         #imgmute {
-            padding-left: 50px;
-            padding-top: 10px;
-            /*display: none;*/
+    padding-left: 12px;
+    padding-top: 6px;
+    text-align: center;
         }
 
         .playpausebtn {
@@ -4907,7 +4911,6 @@
                 height: 39px !important;
             }
         }
-        
     </style>
 
 
@@ -4919,7 +4922,7 @@
         <div class="container-full">
             <div class="logo-left"><a class="logo-brand" rel="external" href="#"><img alt="logo"
                         src="images/flow-english-logo.png"></a></div>
-            
+
             <div class="logo-right"><a class="logo-brand" rel="external" href="#"><img alt="logo"
                         src="images/chipper-sage-logo.png"></a></div>
             <h1 class="firstTitle">
@@ -4927,7 +4930,7 @@
                 -
                 <span class="secondTitle">Learner</span>
             </h1>
-            
+
         </div>
     </div>
     <div style="clear:both"></div>
@@ -4944,7 +4947,7 @@
             </div>
         </div>
     </div>
-    <div class="title-bar" style="display: none;">
+    <div class="title-bar" style="display: block;">
         <div class="container-full">
             <div class="page-row">
                 <div class="column-1">
@@ -4952,15 +4955,20 @@
                             class="ui-link playpausebtn" /></div>
                     <div style="width:50px;float:left;"><img src="images/pause.png" id="pauseContainer"
                             style="display:none;" title="Play" class="ui-link playpausebtn" /></div>
-                    <div style="width:50px;float:left;"><img src="images/unmute.png" id="imgmute" title="Mute Sound"
-                            class="ui-link" /></div>
+
+
+                    <div style="width:50px; float:left;background: red;">
+                        <img src="images/unmute.png" id="imgmute" title="Mute Sound" class="ui-link" />
+                    </div>
+
+
                     <!--<div style="width:40px;float:left;"><img src="images/pause.png" id="imgpause" title="Pause" class="ui-link" /></div>-->
                     <!--Timer code-->
                     <div id="globalholder" style="font-size:15px;height:22px; padding-top:10px;display:none"></div>
                     <div id="mytimerholder" style="font-size:15px;height:22px;padding-top:10px;display:none "></div>
                     <!--Timer end -->
                 </div>
-                <div class="column-2">
+                <div class="column-2" style="display: none;">
                     <div class="page-flow">
                         <ul>
                             <li><a rel="external" href="#">Skills</a></li>
@@ -5146,15 +5154,17 @@
                                 </button>
                             </a> -->
 
-                            <a href="" id="startButton" style=" background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
-                                    Start
+                            <a href="" id="startButton"
+                                style=" background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                                Start
                             </a>
-                            <a href="http://localhost:3000/dashboard"  style=" background-color: sandybrown;margin-left: 10px; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                            <a href="http://localhost:3000/dashboard"
+                                style=" background-color: sandybrown;margin-left: 10px; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
                                 Back
-                        </a>
+                            </a>
 
                             <script>
-                                document.getElementById('startButton').addEventListener('click', function(event) {
+                                document.getElementById('startButton').addEventListener('click', function (event) {
                                     event.preventDefault();
                                     const userId = localStorage.getItem('userId');
                                     const userName = localStorage.getItem('userName');
@@ -5180,8 +5190,8 @@
                     </div>
                 </div>
             </div>
-            <!-- <div id="DivRight" class="col-right">
-                <div class="stage-class">
+            <div id="DivRight" class="col-right">
+                <div class="stage-class" style="display: none;">
                     <ul>
                         <li>
                             <h3>Stage</h3>
@@ -5223,15 +5233,15 @@
                                 class="bloomStage" alt="logo" src="images/pyramid/pyramid_06Grey.png"
                                 style="width:100%;"></a></div>
                 </div>
-                <div class="stage-class" id="scoretime">
+                <!-- <div class="stage-class" id="scoretime" style="display: none;">
                     <h4 class="inner-heading head-bg">Score & Time</h4>
                     <div id="totScore" class="score"></div>
-                    <!--Timer code-->
-            <!-- <div id="globalClock" class="time">0:0 </div>
-            <div id="localClock" style="display:none" class="time">0:0 <span>Min</span></div> -->
-            <!--Timer end -->
+                    
+            <div id="globalClock" class="time">0:0 </div>
+            <div id="localClock" style="display:none" class="time">0:0 <span>Min</span></div>
+            Timer end
         </div>
-        <!-- <div class="stage-class" id="cmpltactivity">
+        <div class="stage-class" id="cmpltactivity" style="display: none;">
             <a style="cursor:pointer;" id="finish">
                 <div class="completeCourseSection">
                     <div class="bottom-menu-icon glyph-icon flaticon-running3"></div>
@@ -5239,7 +5249,7 @@
                 </div>
             </a>
         </div> -->
-    </div> -->
+    </div>
     </div>
     </div>
     <div data-position="fixed" data-role="footer" class="footer">
@@ -5268,7 +5278,7 @@
         });
     </script> -->
 
-<!--Start button script -->
+    <!--Start button script -->
 
     <script>
         document.getElementById('backButton').addEventListener('click', function () {
@@ -5283,15 +5293,15 @@
 
 
 
-<script>
-    document.getElementById('imtVocabulary').addEventListener('click', function () {
-        document.getElementById('imtVocabulary').style.display = 'block';
+    <script>
+        document.getElementById('imtVocabulary').addEventListener('click', function () {
+            document.getElementById('imtVocabulary').style.display = 'block';
 
-    });
-</script>
+        });
+    </script>
 
 
-<!-- <script>
+    <!-- <script>
     document.getElementById('imtVocabulary').addEventListener('click', function () {
         // document.getElementById('imtVocabulary').style.display = 'block';
         document.getElementById('FullPassage').style.display = 'block';
