@@ -317,16 +317,19 @@
                 $("#radio-choice-h-2b").css("display", "none");
             }
             var width = $(window).width();
+
+
             if (width <= 1024) {
 
-                var audioplay = true;
+                var audioplay = true; // Set audioplay to false initially
 
                 // Automatically start the audio when the page loads
                 audioFile.play();
-                audioplay = false;
+                audioplay = false; // This should remain false since the audio is playing
 
-                $("#pauseContainer").css("display", "block");
-                $("#playContainer").css("display", "none");
+                // Set the visibility of the play and pause containers
+                $("#pauseContainer").css("display", "block");  // Show pause button initially
+                $("#playContainer").css("display", "none");   // Hide play button initially
 
                 // Play/Pause functionality
                 $(document).on('click', '.playpausebtn', function () {
@@ -346,12 +349,15 @@
                     }
                 });
 
-
                 audioFile.addEventListener('ended', function () {
                     $("#pauseContainer").css("display", "none");
                     $("#playContainer").css("display", "block");
                 });
             }
+
+
+
+
             $("#imptcmprntion").click(function () {
                 console.log("Clicked on it ")
                 isFIBImplementation = false;
@@ -4872,9 +4878,9 @@
         }
 
         #imgmute {
-    padding-left: 12px;
-    padding-top: 6px;
-    text-align: center;
+            padding-left: 12px;
+            padding-top: 6px;
+            text-align: center;
         }
 
         .playpausebtn {
@@ -4951,16 +4957,13 @@
         <div class="container-full">
             <div class="page-row">
                 <div class="column-1">
-                    <div style="width:50px;float:left;"><img src="images/play.png" id="playContainer" title="Pause"
-                            class="ui-link playpausebtn" /></div>
-                    <div style="width:50px;float:left;"><img src="images/pause.png" id="pauseContainer"
-                            style="display:none;" title="Play" class="ui-link playpausebtn" /></div>
-
-
                     <div style="width:50px; float:left;background: red;">
                         <img src="images/unmute.png" id="imgmute" title="Mute Sound" class="ui-link" />
                     </div>
-
+                    <div style="width:50px;float:left;background: green;"><img src="images/play.png" id="playContainer"
+                            title="Pause" class="ui-link playpausebtn" /></div>
+                    <div style="width:50px;float:left;background: green;"><img src="images/pause.png"
+                            id="pauseContainer" style="display:none;" title="Play" class="ui-link playpausebtn" /></div>
 
                     <!--<div style="width:40px;float:left;"><img src="images/pause.png" id="imgpause" title="Pause" class="ui-link" /></div>-->
                     <!--Timer code-->
@@ -5053,13 +5056,13 @@
                                 class="checkdiv">
                                 <div class="bottom-menu-icon glyph-icon flaticon-tick7"></div>Check
                             </a>
-                          
+
                             <a href="#" id="showAnswer" data-role="button" data-inline="true" class="showanswerdiv"
                                 style="border-radius:3px !important;display:none;margin-left:15px;">
                                 <div class="bottom-menu-icon glyph-icon hand-right"><span id="displayAnswer"></span>
                                 </div>
                             </a>
-                        
+
                             <a href="#" id="backtohome" data-role="button" data-inline="true"
                                 style=" border-radius:3px !important;display:none;padding:.7em 3.5em!important;margin-top:1.3em;background-color:rgb(92, 184, 92) !important;margin-left:17px;"
                                 class="backanswerdiv">
@@ -5191,7 +5194,7 @@
             </div>
             <div id="DivRight" class="col-right">
                 <div class="stage-class" style="display: none;">
-                    <ul>
+                    <!-- <ul>
                         <li>
                             <h3>Stage</h3>
                         </li>
@@ -5201,7 +5204,7 @@
                         <li><a id="stage3" class="disableStage" title="Stage3">3</a></li>
                         <li><a id="stage4" class="disableStage" title="Stage4">4</a></li>
                         <li><a id="stage5" class="disableStage" title="Stage5">5</a></li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <style>
                     @media (max-width: 1600px) {
@@ -5248,8 +5251,8 @@
                 </div>
             </a>
         </div> -->
-    </div>
-    </div>
+            </div>
+        </div>
     </div>
     <div data-position="fixed" data-role="footer" class="footer">
         <div class="container-full">
