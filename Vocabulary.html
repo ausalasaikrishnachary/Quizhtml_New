@@ -962,12 +962,13 @@
               
                     // Update the document with the new array
                     userDocRef.set({ scores: scores })
-                      .then(() => {
-                        console.log("Data saved successfully!");
-                      })
-                      .catch((error) => {
-                        console.error("Error saving data: ", error);
-                      });
+                    .then(() => {
+                      console.log("Data saved successfully!");
+                      updateActivityStatus(); // Call function to update UI
+                    })
+                    .catch((error) => {
+                      console.error("Error saving data: ", error);
+                    });
                   } else {
                     // Document does not exist, create it with the new array
                     userDocRef.set({
