@@ -83,10 +83,6 @@
         });
       </script>
       
-
-      
-      
-
       <script>
         // Function to fetch and display user info from localStorage
         function displayStoredUserInfo() {
@@ -334,6 +330,7 @@
                     $("#playContainer").css("display", "block");
                 });
             }
+            
             $("#imptcmprntion").click(function () {
                 console.log("triggered")
                 $("#DivLeft1").hide();
@@ -384,7 +381,6 @@
             });
             $("#imptcmprntion").trigger("click");
 
-
             $("#imtVocabulary").click(function () {
                 isFIBImplementation = false;
                 $('#playContainer').hide();
@@ -427,7 +423,6 @@
                     audioFile.currentTime = 0;
                 }
             });
-
 
             $("#imtJumbledWords").click(function () {
                 isFIBImplementation = false;
@@ -607,11 +602,13 @@
                 }
 
             });
+
+
             $("#Backbutton").click(function () {
     window.location.href = 'index.html';
 });
 
-            $("#Backbutton1").click(function () {
+            $("#Backbutton").click(function () {
                 isFIBImplementation = false;
                 $('#playContainer').show();
                 //$('#pauseContainer').show();
@@ -852,7 +849,7 @@
                 $("#showAnswer").css("display", "none");
             });
 
-            $("#finish").on("vclick", function (event) {
+             $("#finish").on("vclick", function (event) {
                 let correctAnswerCount = 0;
                 let TotalnumberOfQuestion = $("#stack" + currentPageNumber).find(".completed").length;
                 let questionScores = [];
@@ -985,18 +982,20 @@
                   console.error("Error fetching document: ", error);
                 });
               });
+
               
+            $("#checkanswer").on("vclick", function (event) {
+                /*Timer code*/
 
-
-
-              $("#checkanswer").on("vclick", function(event) {
-                // Existing timer code...
                 mytimermin[pbi - 1] = myminute;
                 mytimersec[pbi - 1] = mysec;
                 $("#mytimerholder").html("LocalValue[" + pbi + "]=" + mytimermin[pbi - 1] + ":" + mytimersec[pbi - 1]);
-            
-                // Existing question checking logic...
+                /*Timer end*/
+
+                $("#myViewStack").addClass($('#myViewStack').attr('class'));
+
                 if ($("#myViewStack").hasClass("viewstackMCQ")) {
+
                     $("#resultcontainer").show();
                     currentQuestionObject.isChecked = true;
                     var arrOptions = $("#stack" + currentPageNumber).find(".step_" + activeStepNo).find("input[type=radio]");
@@ -1006,54 +1005,67 @@
                         $("#b" + rad_id).removeClass();
                         $("#b" + rad_id).addClass("regularBoxradio");
                         if ($("#" + rad_id).attr("id") == currentQuestionObject.checkedOptionId) {
+
                             if (($("#" + rad_id).attr("value") == $("#" + currentQuestionObject.checkedOptionId).attr("value")) && $("#" + rad_id).attr("value") == "true") {
                                 $("#" + rad_id).addClass("correct_choice");
                                 $("#b" + rad_id).addClass("CorrectBoxradio");
                                 $("#b" + rad_id).removeClass("regularBoxradio");
                                 $("#b" + rad_id).removeClass("wrongBoxradio");
+
                                 CurrentInnerQuestion.isCorrect = true;
                                 $("#rightAnswer").hide();
+
                                 correctAnswerCount++;
-                            } else {
+                            }
+
+                            else {
                                 $("#b" + rad_id).addClass("wrongBoxradio");
                                 $("#b" + rad_id).removeClass("regularBoxradio");
                                 $("#b" + rad_id).removeClass("CorrectBoxradio");
                                 CurrentInnerQuestion.isCorrect = false;
+
                                 if ($('#showAnswer').is(":visible")) {
                                     $("#rightAnswer").hide();
-                                } else {
+
+                                }
+                                else {
                                     if ($("#testmode").hasClass("ui-radio-on")) {
                                         $("#rightAnswer").hide();
-                                    } else {
+                                    }
+                                    else {
                                         $("#rightAnswer").show();
                                         $("#rightAnswer_mat").hide();
+
                                     }
                                 }
+
                             }
                         }
                     }
                     correctAnswerCount = 0;
-                    $(".stackchild").each(function() {
-                        $(this).find("input[type=radio]").each(function() {
+
+                    $(".stackchild").each(function () {
+                        $(this).find("input[type=radio]").each(function () {
                             if ($(this).hasClass("correct_choice")) {
                                 correctAnswerCount++;
                             }
                         });
                     });
+
                     $("#totScore").html(correctAnswerCount);
                     currentQuestionObject.isChecked = true;
-            
-                    // Check if all questions have been answered
-                    checkedQuestions = $(".stackchild").filter(function() {
-                        return $(this).find("input[type=radio]").hasClass("correct_choice");
-                    }).length;
-            
-                    // Enable the "Complete" button if all questions are checked
-                    if (checkedQuestions >= totalQuestions) {
-                        $("#finish").removeAttr("disabled");
-                    } else {
-                        $("#finish").attr("disabled", "disabled");
-                    }}
+
+                    //$("#rightAnswer").click(function (e) {
+                    //    if ($("#myViewStack").hasClass("viewstackMCQ")) {
+
+                    //        $("#rightAnswer").hide();
+                    //        $("#showAnswer").show();
+                    //        $("#dispalyAnswer").html("");
+                    //        $("#dispalyAnswer").html("Correct Answer : " + currentQuestionObject.correctoption.replace(/#/g, " "));
+                    //    }
+                    //});
+
+                }
 
 
                 else if ($("#myViewStack").hasClass("viewstackJumbled")) {
@@ -4291,7 +4303,7 @@
 
             });
         }
-      
+
 
     </script>
 
@@ -4933,7 +4945,7 @@
             </div>
         </div>
     </div>
-    <div class="title-bar " id="play-bar">
+    <div class="title-bar" id="play-bar">
         <div class="container-full">
             <div class="page-row">
                 <div class="column-1">
@@ -5023,78 +5035,17 @@
                                 class="backanswerdiv">
                                 <div class="bottom-menu-icon glyph-icon hand-right"></div>Back
                             </a>
-                            <a href="index.html" id="Backbutton" data-role="button" data-inline="true" class="showanswerdiv"
+                            <a href="#" id="Backbutton" data-role="button" data-inline="true" class="showanswerdiv"
                                 style="border-radius:3px !important;margin-left:15px;background-color:#5cb85c !important;">
                                 <div><span>Go back to the Activities</span></div>
                             </a>
-
-                            <a href="#" id="finish" data-role="button" data-inline="true" class="showanswerdiv"
+                            <a href="#" id="finish" data-role="button" data-inline="true" class="showanswerdiv disabled"
                             style="border-radius:3px !important;margin-left:15px;background-color:#5cb85c !important;">
-                            <div><span>Complete</span></div>
-                        </a>
-
-                            <div id="DivRight" class="col-right">
-                                <div class="stage-class">
-                                    <ul>
-                                        <li>
-                                            <h3>Stage</h3>
-                                        </li>
-                                        <li><a id="stage0" class="disableStage" title="Foundation">0</a></li>
-                                        <li><a id="stage1" rel="external" href="African-Elephants.html?stg=1" title="Stage1">1</a></li>
-                                        <li><a id="stage2" class="disableStage" title="Stage2">2</a></li>
-                                        <li><a id="stage3" class="disableStage" title="Stage3">3</a></li>
-                                        <li><a id="stage4" class="disableStage" title="Stage4">4</a></li>
-                                        <li><a id="stage5" class="disableStage" title="Stage5">5</a></li>
-                                    </ul>
-                                </div>
-                                <style>
-                                    @media (max-width: 1600px) {
-                
-                                        /* Adjust the min-width as needed for your desktop breakpoint */
-                                        .stage-class.bloom_pyramid {
-                                            display: none;
-                                        }
-                                    }
-                                </style>
-                                <div class="stage-class bloom_pyramid ">
-                                    <div id="bloom_1" class="p1grey"><a id="lnkBTfirstgrey" href="#popupBTfirst" data-rel="popup"><img
-                                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_01Grey.png"
-                                                style="width:100%;"></a></div>
-                                    <div id="bloom_2" class="p2grey"><a id="lnkBTsecondgrey" href="#popupBTsecond" data-rel="popup"><img
-                                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_02Grey.png"
-                                                style="width:100%;"></a></div>
-                                    <div id="bloom_3" class="p3grey"><a id="lnkBTthirdgrey" href="#popupBTthird" data-rel="popup"><img
-                                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_03Grey.png"
-                                                style="width:100%;"></a></div>
-                                    <div id="bloom_4" class="p4grey"><a id="lnkBTfourthgrey" href="#popupBTfourth" data-rel="popup"><img
-                                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_04Grey.png"
-                                                style="width:100%;"></a></div>
-                                    <div id="bloom_5" class="p5grey"><a id="lnkBTfifthgrey" href="#popupBTfifth" data-rel="popup"><img
-                                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_05Grey.png"
-                                                style="width:100%;"></a></div>
-                                    <div id="bloom_6" class="p6grey"><a id="lnkBTsixthgrey" href="#popupBTsixth" data-rel="popup"><img
-                                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_06Grey.png"
-                                                style="width:100%;"></a></div>
-                                </div>
-                                <div class="stage-class" id="scoretime">
-                                    <h4 class="inner-heading head-bg">Score & Time</h4>
-                                    <div id="totScore" class="score"></div>
-                                    <!--Timer code-->
-                                    <div id="globalClock" class="time">0:0 </div>
-                                    <div id="localClock" style="display:none" class="time">0:0 <span>Min</span></div>
-                                    <!--Timer end -->
-                                </div>
-                                <div class="stage-class" id="cmpltactivity">
-                                    <a style="cursor:pointer;" id="finish">
-                                        <div class="completeCourseSection">
-                                            <div class="bottom-menu-icon glyph-icon flaticon-running3"></div>
-                                            Complete Activity
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+                            <div><span>complete</span></div>
+                         </a>
+                         
+                         
                         </div>
-
                     </div>
                     <div id="videocontainer" style="display:none">
                         <video id="PlayVideo" style="width:90%" controls>
@@ -5187,8 +5138,66 @@
                     </div>
                 </div>
             </div>
-            <div id="DivRight" class="col-right"></div>
-            
+            <div id="DivRight" class="col-right">
+                <div class="stage-class">
+                    <ul>
+                        <li>
+                            <h3>Stage</h3>
+                        </li>
+                        <li><a id="stage0" class="disableStage" title="Foundation">0</a></li>
+                        <li><a id="stage1" rel="external" href="African-Elephants.html?stg=1" title="Stage1">1</a></li>
+                        <li><a id="stage2" class="disableStage" title="Stage2">2</a></li>
+                        <li><a id="stage3" class="disableStage" title="Stage3">3</a></li>
+                        <li><a id="stage4" class="disableStage" title="Stage4">4</a></li>
+                        <li><a id="stage5" class="disableStage" title="Stage5">5</a></li>
+                    </ul>
+                </div>
+                <style>
+                    @media (max-width: 1600px) {
+
+                        /* Adjust the min-width as needed for your desktop breakpoint */
+                        .stage-class.bloom_pyramid {
+                            display: none;
+                        }
+                    }
+                </style>
+                <div class="stage-class bloom_pyramid ">
+                    <div id="bloom_1" class="p1grey"><a id="lnkBTfirstgrey" href="#popupBTfirst" data-rel="popup"><img
+                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_01Grey.png"
+                                style="width:100%;"></a></div>
+                    <div id="bloom_2" class="p2grey"><a id="lnkBTsecondgrey" href="#popupBTsecond" data-rel="popup"><img
+                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_02Grey.png"
+                                style="width:100%;"></a></div>
+                    <div id="bloom_3" class="p3grey"><a id="lnkBTthirdgrey" href="#popupBTthird" data-rel="popup"><img
+                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_03Grey.png"
+                                style="width:100%;"></a></div>
+                    <div id="bloom_4" class="p4grey"><a id="lnkBTfourthgrey" href="#popupBTfourth" data-rel="popup"><img
+                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_04Grey.png"
+                                style="width:100%;"></a></div>
+                    <div id="bloom_5" class="p5grey"><a id="lnkBTfifthgrey" href="#popupBTfifth" data-rel="popup"><img
+                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_05Grey.png"
+                                style="width:100%;"></a></div>
+                    <div id="bloom_6" class="p6grey"><a id="lnkBTsixthgrey" href="#popupBTsixth" data-rel="popup"><img
+                                class="bloomStage" alt="logo" src="images/pyramid/pyramid_06Grey.png"
+                                style="width:100%;"></a></div>
+                </div>
+                <div class="stage-class" id="scoretime">
+                    <h4 class="inner-heading head-bg">Score & Time</h4>
+                    <div id="totScore" class="score"></div>
+                    <!--Timer code-->
+                    <div id="globalClock" class="time">0:0 </div>
+                    <div id="localClock" style="display:none" class="time">0:0 <span>Min</span></div>
+                    <!--Timer end -->
+                </div>
+                <div class="stage-class" id="cmpltactivity">
+                    <a style="cursor:pointer;" id="finish">
+                        <div class="completeCourseSection">
+                            <div class="bottom-menu-icon glyph-icon flaticon-running3"></div>
+                            Complete Activity
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <div data-position="fixed" data-role="footer" class="footer">
@@ -5387,3 +5396,8 @@
 </body>
 
 </html>
+
+
+
+
+
