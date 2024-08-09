@@ -87,38 +87,29 @@
       
       
 
-    <script>
-        // Define global variables to store the name and uid
-        var userName;
-        var userId;
+      <script>
+        // Function to fetch and display user info from localStorage
+        function displayStoredUserInfo() {
+            const name = localStorage.getItem('userName') || 'Guest';
+            const uid = localStorage.getItem('userId') || 'unknown';
 
-        // Function to get query parameters
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return params;
-        }
-
-        // Function to display name and uid
-        function displayUserInfo() {
-            const queryParams = getQueryParams();
-            const name = queryParams.get('name') || 'Guest'; // Default to 'Guest' if no name parameter is found
-            const uid = queryParams.get('uid') || 'unknown'; // Default to 'unknown' if no uid parameter is found
+            
             console.log("name=", name);
             console.log("uid=", uid);
-            const greetingElement = document.getElementById('greeting');
-            greetingElement.textContent = `Hello, ${name}! `;
 
-            // Store the name and uid in the global variables
-            userName = name;
-            userId = uid;
+            const userInfoElement = document.getElementById('greeting');
+            userInfoElement.textContent = `Hello, ${name}`;
         }
-
-        // Call displayUserInfo on window load
-        window.onload = displayUserInfo;
 
         function handleLogout() {
-            window.location.href = 'http://localhost:3000/';
-        }
+        // Clear localStorage on logout
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
+        window.location.href = 'http://localhost:3000/';
+    }
+
+        // Call displayStoredUserInfo on window load
+        window.onload = displayStoredUserInfo;
     </script>
 
 
@@ -864,142 +855,147 @@
                 let correctAnswerCount = 0;
                 let TotalnumberOfQuestion = $("#stack" + currentPageNumber).find(".completed").length;
                 let questionScores = [];
-
+              
                 if ($("#myViewStack").hasClass("viewstackMCQ")) {
-                    $(".stackchild").each(function (index) {
-                        let questionScore = 0;
-                        $(this).find("input[type=radio]").each(function () {
-                            if ($(this).hasClass("correct_choice") && $(this).is(":checked")) {
-                                questionScore = 1;
-                                correctAnswerCount++;
-                            }
-                        });
-                        questionScores.push({ questionNumber: index + 1, score: questionScore });
+                  $(".stackchild").each(function (index) {
+                    let questionScore = 0;
+                    $(this).find("input[type=radio]").each(function () {
+                      if ($(this).hasClass("correct_choice") && $(this).is(":checked")) {
+                        questionScore = 1;
+                        correctAnswerCount++;
+                      }
                     });
+                    questionScores.push({ questionNumber: index + 1, score: questionScore });
+                  });
                 } else if ($("#myViewStack").hasClass("viewstackJumbled") || $("#myViewStack").hasClass("viewstackFIB") || $("#myViewStack").hasClass("viewstackSpelling")) {
-                    for (let x = 0; x < currentQuestionObject.steps.length; x++) {
-                        let questionScore = currentQuestionObject.steps[x].isCorrect ? 1 : 0;
-                        correctAnswerCount += questionScore;
-                        questionScores.push({ questionNumber: x + 1, score: questionScore });
-                    }
+                  for (let x = 0; x < currentQuestionObject.steps.length; x++) {
+                    let questionScore = currentQuestionObject.steps[x].isCorrect ? 1 : 0;
+                    correctAnswerCount += questionScore;
+                    questionScores.push({ questionNumber: x + 1, score: questionScore });
+                  }
                 } else if ($("#myViewStack").hasClass("viewstackQA")) {
-                    $(".stackchild").each(function (index) {
-                        let questionScore = 0;
-                        $(this).find("input[type=textarea]").each(function () {
-                            if ($(this).hasClass("correct_choice") && $(this).val().trim() !== "") {
-                                questionScore = 1;
-                                correctAnswerCount++;
-                            }
-                        });
-                        questionScores.push({ questionNumber: index + 1, score: questionScore });
+                  $(".stackchild").each(function (index) {
+                    let questionScore = 0;
+                    $(this).find("input[type=textarea]").each(function () {
+                      if ($(this).hasClass("correct_choice") && $(this).val().trim() !== "") {
+                        questionScore = 1;
+                        correctAnswerCount++;
+                      }
                     });
+                    questionScores.push({ questionNumber: index + 1, score: questionScore });
+                  });
                 } else {
-                    for (let x = 0; x < currentQuestionObject.steps.length; x++) {
-                        let questionScore = currentQuestionObject.steps[x].isCorrect ? 1 : 0;
-                        correctAnswerCount += questionScore;
-                        questionScores.push({ questionNumber: x + 1, score: questionScore });
-                    }
+                  for (let x = 0; x < currentQuestionObject.steps.length; x++) {
+                    let questionScore = currentQuestionObject.steps[x].isCorrect ? 1 : 0;
+                    correctAnswerCount += questionScore;
+                    questionScores.push({ questionNumber: x + 1, score: questionScore });
+                  }
                 }
-
+              
                 $("#scorecontainer h3").html("You scored " + correctAnswerCount + " / " + TotalnumberOfQuestion);
                 $("#popupDialog").popup('open');
-
+              
                 // Function to convert timestamp to Indian format
                 const formatDate = (date) => {
-                    const day = String(date.getDate()).padStart(2, '0');
-                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-                    const year = date.getFullYear();
-                    return `${day}/${month}/${year}`;
+                  const day = String(date.getDate()).padStart(2, '0');
+                  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                  const year = date.getFullYear();
+                  return `${day}/${month}/${year}`;
                 };
-
+              
                 const formatTime = (date) => {
-                    return date.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
+                  return date.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
                 };
-
+              
                 const parseDuration = (duration) => {
-                    const parts = duration.split(':').map(Number);
-                    if (parts.length === 2) {
-                        // MM:SS
-                        return (parts[0] * 60 + parts[1]) * 1000;
-                    }
-                    return 0;
+                  const parts = duration.split(':').map(Number);
+                  if (parts.length === 2) {
+                    // MM:SS
+                    return (parts[0] * 60 + parts[1]) * 1000;
+                  }
+                  return 0;
                 };
-
+              
                 const calculateStartTime = (endTime, duration) => {
-                    const endDate = new Date(endTime);
-                    const durationMs = parseDuration(duration);
-                    const startDate = new Date(endDate - durationMs);
-                    return formatTime(startDate);
+                  const endDate = new Date(endTime);
+                  const durationMs = parseDuration(duration);
+                  const startDate = new Date(endDate - durationMs);
+                  return formatTime(startDate);
                 };
-
+              
                 const currentDate = new Date();
                 const duration = document.getElementById("globalClock").textContent; // Duration in MM:SS
                 const endTime = currentDate.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
                 const startTime = calculateStartTime(currentDate, duration);
-
+              
                 const userData = {
-                    correctAnswers: correctAnswerCount,
-                    totalQuestions: TotalnumberOfQuestion,
-                    date: formatDate(currentDate), // Store date as DD/MM/YYYY
-                    endTime: formatTime(currentDate), // Store end time in Indian format
-                    startTime: startTime, // Calculate and store start time
-                    duration: duration, // Duration from the global clock
-                    activity: currentActivity, // Include the current activity
-                    questionScores: questionScores // Array of question number and scores
+                  correctAnswers: correctAnswerCount,
+                  totalQuestions: TotalnumberOfQuestion,
+                  date: formatDate(currentDate), // Store date as DD/MM/YYYY
+                  endTime: formatTime(currentDate), // Store end time in Indian format
+                  startTime: startTime, // Calculate and store start time
+                  duration: duration, // Duration from the global clock
+                  activity: currentActivity, // Include the current activity
+                  questionScores: questionScores // Array of question number and scores
                 };
+              
+                const uid = localStorage.getItem('userId') || 'unknown';
+            
+                if (uid === 'unknown') {
+                    console.error("User ID is not set. Unable to save score data.");
+                    return;
+                }
+
 
                 // Reference to the Firestore document
-                const userDocRef = firebase.firestore().collection('score').doc(userId);
-
+                const userDocRef = firebase.firestore().collection('score').doc(uid);
+              
                 // Fetch the current document to update the array
                 userDocRef.get().then((doc) => {
-                    if (doc.exists) {
-                        // Document exists, get the current array
-                        const data = doc.data();
-                        const scores = data.scores || []; // Default to an empty array if no scores field
-
-                        // Append new score to the array
-                        scores.push(userData);
-
-                        // Update the document with the new array
-                        userDocRef.set({ scores: scores })
-                            .then(() => {
-                                console.log("Data saved successfully!");
-                            })
-                            .catch((error) => {
-                                console.error("Error saving data: ", error);
-                            });
-                    } else {
-                        // Document does not exist, create it with the new array
-                        userDocRef.set({
-                            scores: [userData]
-                        })
-                            .then(() => {
-                                console.log("Data saved successfully!");
-                            })
-                            .catch((error) => {
-                                console.error("Error saving data: ", error);
-                            });
-                    }
+                  if (doc.exists) {
+                    // Document exists, get the current array
+                    const data = doc.data();
+                    const scores = data.scores || []; // Default to an empty array if no scores field
+              
+                    // Append new score to the array
+                    scores.push(userData);
+              
+                    // Update the document with the new array
+                    userDocRef.set({ scores: scores })
+                      .then(() => {
+                        console.log("Data saved successfully!");
+                      })
+                      .catch((error) => {
+                        console.error("Error saving data: ", error);
+                      });
+                  } else {
+                    // Document does not exist, create it with the new array
+                    userDocRef.set({
+                      scores: [userData]
+                    })
+                    .then(() => {
+                      console.log("Data saved successfully!");
+                    })
+                    .catch((error) => {
+                      console.error("Error saving data: ", error);
+                    });
+                  }
                 }).catch((error) => {
-                    console.error("Error fetching document: ", error);
+                  console.error("Error fetching document: ", error);
                 });
-            });
+              });
+              
 
 
 
-            $("#checkanswer").on("vclick", function (event) {
-                /*Timer code*/
-
+              $("#checkanswer").on("vclick", function(event) {
+                // Existing timer code...
                 mytimermin[pbi - 1] = myminute;
                 mytimersec[pbi - 1] = mysec;
                 $("#mytimerholder").html("LocalValue[" + pbi + "]=" + mytimermin[pbi - 1] + ":" + mytimersec[pbi - 1]);
-                /*Timer end*/
-
-                $("#myViewStack").addClass($('#myViewStack').attr('class'));
-
+            
+                // Existing question checking logic...
                 if ($("#myViewStack").hasClass("viewstackMCQ")) {
-
                     $("#resultcontainer").show();
                     currentQuestionObject.isChecked = true;
                     var arrOptions = $("#stack" + currentPageNumber).find(".step_" + activeStepNo).find("input[type=radio]");
@@ -1009,67 +1005,54 @@
                         $("#b" + rad_id).removeClass();
                         $("#b" + rad_id).addClass("regularBoxradio");
                         if ($("#" + rad_id).attr("id") == currentQuestionObject.checkedOptionId) {
-
                             if (($("#" + rad_id).attr("value") == $("#" + currentQuestionObject.checkedOptionId).attr("value")) && $("#" + rad_id).attr("value") == "true") {
                                 $("#" + rad_id).addClass("correct_choice");
                                 $("#b" + rad_id).addClass("CorrectBoxradio");
                                 $("#b" + rad_id).removeClass("regularBoxradio");
                                 $("#b" + rad_id).removeClass("wrongBoxradio");
-
                                 CurrentInnerQuestion.isCorrect = true;
                                 $("#rightAnswer").hide();
-
                                 correctAnswerCount++;
-                            }
-
-                            else {
+                            } else {
                                 $("#b" + rad_id).addClass("wrongBoxradio");
                                 $("#b" + rad_id).removeClass("regularBoxradio");
                                 $("#b" + rad_id).removeClass("CorrectBoxradio");
                                 CurrentInnerQuestion.isCorrect = false;
-
                                 if ($('#showAnswer').is(":visible")) {
                                     $("#rightAnswer").hide();
-
-                                }
-                                else {
+                                } else {
                                     if ($("#testmode").hasClass("ui-radio-on")) {
                                         $("#rightAnswer").hide();
-                                    }
-                                    else {
+                                    } else {
                                         $("#rightAnswer").show();
                                         $("#rightAnswer_mat").hide();
-
                                     }
                                 }
-
                             }
                         }
                     }
                     correctAnswerCount = 0;
-
-                    $(".stackchild").each(function () {
-                        $(this).find("input[type=radio]").each(function () {
+                    $(".stackchild").each(function() {
+                        $(this).find("input[type=radio]").each(function() {
                             if ($(this).hasClass("correct_choice")) {
                                 correctAnswerCount++;
                             }
                         });
                     });
-
                     $("#totScore").html(correctAnswerCount);
                     currentQuestionObject.isChecked = true;
-
-                    //$("#rightAnswer").click(function (e) {
-                    //    if ($("#myViewStack").hasClass("viewstackMCQ")) {
-
-                    //        $("#rightAnswer").hide();
-                    //        $("#showAnswer").show();
-                    //        $("#dispalyAnswer").html("");
-                    //        $("#dispalyAnswer").html("Correct Answer : " + currentQuestionObject.correctoption.replace(/#/g, " "));
-                    //    }
-                    //});
-
-                }
+            
+                    // Check if all questions have been answered
+                    checkedQuestions = $(".stackchild").filter(function() {
+                        return $(this).find("input[type=radio]").hasClass("correct_choice");
+                    }).length;
+            
+                    // Enable the "Complete" button if all questions are checked
+                    if (checkedQuestions >= totalQuestions) {
+                        $("#finish").removeAttr("disabled");
+                    } else {
+                        $("#finish").attr("disabled", "disabled");
+                    }}
 
 
                 else if ($("#myViewStack").hasClass("viewstackJumbled")) {
@@ -5044,7 +5027,7 @@
                                 <div><span>Go back to the Activities</span></div>
                             </a>
 
-                            <a href="#" id="Backbutton" data-role="button" data-inline="true" class="showanswerdiv"
+                            <a href="#" id="finish" data-role="button" data-inline="true" class="showanswerdiv"
                             style="border-radius:3px !important;margin-left:15px;background-color:#5cb85c !important;">
                             <div><span>Complete</span></div>
                         </a>
