@@ -43,6 +43,73 @@
         // Call displayStoredUserInfo on window load
         window.onload = displayStoredUserInfo;
     </script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCr67hjaYZtUp4K32J8Ga4x6fcMFDZb6Z4",
+            authDomain: "quiz-app-f21c8.firebaseapp.com",
+            databaseURL: "https://quiz-app-f21c8-default-rtdb.firebaseio.com",
+            projectId: "quiz-app-f21c8",
+            storageBucket: "quiz-app-f21c8.appspot.com",
+            messagingSenderId: "717819943537",
+            appId: "1:717819943537:web:143434ed850a72dc5ed9d0"
+        };
+    
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    
+        // Function to update the UI with the fetched scores
+        function updateUIWithScores(scores) {
+          // Get the list item element
+          const vocabularyItem = document.getElementById('imtVocabulary');
+    
+          // Check if any score activity is 'Vocabulary'
+          const hasVocabularyScore = scores.some(score => score.activity === 'Vocabulary');
+    
+          // Apply the background color based on the condition
+          if (hasVocabularyScore) {
+            vocabularyItem.classList.add('highlight');
+          } else {
+            vocabularyItem.classList.remove('highlight');
+          }
+        }
+    
+        // Function to fetch score data from Firestore
+        function fetchScores(uid) {
+          if (!uid) {
+            console.error("User ID is required.");
+            return;
+          }
+    
+          // Reference to the Firestore document
+          const userDocRef = db.collection('score').doc(uid);
+    
+          // Fetch the document
+          userDocRef.get().then((doc) => {
+            if (doc.exists) {
+              // Document exists, retrieve the scores array
+              const data = doc.data();
+              const scores = data.scores || []; // Default to an empty array if no scores field
+    
+              console.log("Scores fetched successfully:", scores);
+    
+              // Update UI or perform any other actions with the fetched scores
+              updateUIWithScores(scores); // This function handles the scores data
+    
+            } else {
+              console.log("No document found for the given user ID.");
+            }
+          }).catch((error) => {
+            console.error("Error fetching document: ", error);
+          });
+        }
+    
+        // Example usage
+        const uid = localStorage.getItem('userId') || 'unknown';
+        fetchScores(uid);
+      </script>
 </head>
 <body>
    
