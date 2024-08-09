@@ -239,7 +239,7 @@ hr {
 .page-row {
     width: 100%;
     height: auto;
-    background-color: #64ce80;
+    /* background-color: #64ce80; */
     padding: 3px 0px;
     margin: 0px;
     float: left;
