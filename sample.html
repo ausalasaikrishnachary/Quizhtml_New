@@ -864,6 +864,11 @@
                 $("#showAnswer").css("display", "none");
             });
 
+
+            // Include Firebase scripts and initialize Firestore
+// This script assumes Firebase has already been initialized in your project
+
+
             $("#finish").on("vclick", function (event) {
                 let correctAnswerCount = 0;
                 let TotalnumberOfQuestion = $("#stack" + currentPageNumber).find(".completed").length;
@@ -5161,9 +5166,9 @@
                                 style=" background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
                                 Start Activities
                             </a>
-                            <!-- <a href="http://localhost:3000/dashboard"
+                            <!-- <a href=""
                                 style=" background-color: sandybrown;margin-left: 10px; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
-                                Back
+                                read
                             </a> -->
 
                             <!-- <script>
@@ -5507,6 +5512,74 @@
 
 
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle the page change
+        function updatePagination(pageNumber) {
+            // Hide all pages
+            $(".pagination ul li span").removeClass("current");
+
+            // Show the current page
+            $("#page-" + pageNumber + " > a").addClass("current");
+            $("#page-" + pageNumber + " > span").addClass("current");
+
+            // Store the current page number in localStorage
+            localStorage.setItem('currentPage', pageNumber);
+        }
+
+        // Read the page number from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageNumber = urlParams.get('page');
+
+        if (pageNumber) {
+            updatePagination(pageNumber);
+        } else {
+            // If no page number is in the URL, use the one from localStorage if available
+            const storedPageNumber = localStorage.getItem('currentPage');
+            if (storedPageNumber) {
+                updatePagination(storedPageNumber);
+            }
+        }
+
+        // Add event listener to the start button
+        document.getElementById('startButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of the link
+
+            // Get userId from localStorage
+            const userId = localStorage.getItem('userId');
+
+            // Get the current page number from localStorage
+            const currentPage = localStorage.getItem('currentPage');
+
+            // Reference to Firestore
+            var db = firebase.firestore();
+
+            // Data you want to store
+            var passageData = {
+                status: 'completed',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Store the current timestamp
+                currentPassage: "read" // Store the current passage number from localStorage
+            };
+
+            // Store data in Firestore
+            const userDocRef = db.collection('passage').doc(userId);
+
+            userDocRef.set(passageData)
+            .then(function() {
+                console.log('Document written successfully');
+                // Redirect to dashboard after successful Firestore write
+                window.location.href = 'http://localhost:3000/dashboard';
+            })
+            .catch(function(error) {
+                console.error('Error adding document: ', error);
+            });
+        });
+    });
+</script>
+
+
+
+
 
     <!--  End - step 1 -->
 </body>
