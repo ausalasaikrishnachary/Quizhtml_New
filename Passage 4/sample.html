@@ -777,20 +777,37 @@
             });
 
 
+            $(document).ready(function() {
+            // Bind the play audio button click event
+            $("#play-audio-btn").click(function() {
+                LoadAudio(0); // Load and play audio on button click
 
-            $("#imgmute").click(function () {
-                if (!audioFile.muted) {
-                    audioFile.muted = true;
+                // Hide the play button after the audio starts
+                $(this).hide();
+            });
 
-                    $("#imgmute").attr("src", "images/mute.png");
-                    $("#imgmute").attr("title", "Unmute Sound");
-                } else {
-                    audioFile.muted = false;
-
-                    $("#imgmute").attr("src", "images/unmute.png");
-                    $("#imgmute").attr("title", "Mute Sound");
+            // Toggle mute/unmute when the mute button is clicked
+            $("#imgmute").click(function() {
+                if (audioFile) {
+                    if (audioFile.muted) {
+                        audioFile.muted = false;
+                        $(this).attr("src", "images/unmute.png");
+                        $(this).attr("title", "Mute Sound");
+                        audioFile.play(); // Resume playing if muted
+                    } else {
+                        audioFile.muted = true;
+                        $(this).attr("src", "images/mute.png");
+                        $(this).attr("title", "Unmute Sound");
+                    }
                 }
             });
+
+            // Automatically play audio after user interaction with the page
+            $(document).one('click', function() {
+                LoadAudio(0); // Load and play audio on first user interaction
+                $("#play-audio-btn").hide(); // Hide the play button after the first interaction
+            });
+        });
 
             $(document).on('focusin', 'input[type="text"]', function (event) {
                 $("#showAnswer").css("display", "none");
@@ -2512,28 +2529,32 @@
             buildContentMat(PageNumber, mode);
         }
 
+        var audioFile; // Global variable to hold the audio object
+
         function LoadAudio(pageNumber) {
+            var AudioFileName = arrQuestionObjectsMaster[pageNumber].SoundFile;
 
-            AudioFileName = arrQuestionObjectsMaster[pageNumber].SoundFile;
+            // If there's an existing audio object, pause and reset it
+            if (audioFile) {
+                audioFile.pause();
+                audioFile.currentTime = 0;
+            }
+
+            // Create a new audio object and set it to the global variable
             audioFile = new Audio(AudioFileName);
-
-            audioFile.load();
-            audioFile.play();
             audioFile.volume = 1.0;
-            if (!audioFile.muted) {
 
-                audioFile.muted = false;
-                $("#imgmute").attr("src", "images/unmute.png")
-                $("#imgmute").attr("title", "Mute Sound");
-            }
-            else {
+            // Play the audio
+            audioFile.play().then(() => {
+                console.log("Audio is playing.");
+                $("#imgmute").show(); // Show mute/unmute button
+            }).catch((error) => {
+                console.error("Audio playback failed:", error);
+            });
 
-                audioFile.muted = true;
-                $("#imgmute").attr("src", "images/mute.png");
-                $("#imgmute").attr("title", "Unmute Sound");
-
-            }
-
+            // Set the initial mute/unmute button state
+            $("#imgmute").attr("src", "images/unmute.png");
+            $("#imgmute").attr("title", "Mute Sound");
         }
 
         var questionIndex = 0;
@@ -5192,10 +5213,10 @@
                         </fieldset>
 
                     </div>
-                    <div class="main-pagenation rightpagination"
+                    <!-- <div class="main-pagenation rightpagination"
                         title="Click on the ellipses(3 dots) to specify a page number">
                         <div id="light-pagination" class="pagination"></div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div id="DivRight" class="col-right">
