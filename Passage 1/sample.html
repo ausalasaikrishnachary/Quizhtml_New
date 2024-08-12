@@ -779,24 +779,36 @@
 
 
             $(document).ready(function() {
-    LoadAudio(0); // Call LoadAudio with the initial page number on document ready
+            // Bind the play audio button click event
+            $("#play-audio-btn").click(function() {
+                LoadAudio(0); // Load and play audio on button click
 
-    // Toggle mute/unmute when the button is clicked
-    $("#imgmute").click(function() {
-        if (audioFile) {
-            if (audioFile.muted) {
-                audioFile.muted = false;
-                $("#imgmute").attr("src", "images/unmute.png");
-                $("#imgmute").attr("title", "Mute Sound");
-                audioFile.play(); // Resume playing if muted
-            } else {
-                audioFile.muted = true;
-                $("#imgmute").attr("src", "images/mute.png");
-                $("#imgmute").attr("title", "Unmute Sound");
-            }
-        }
-    });
-});
+                // Hide the play button after the audio starts
+                $(this).hide();
+            });
+
+            // Toggle mute/unmute when the mute button is clicked
+            $("#imgmute").click(function() {
+                if (audioFile) {
+                    if (audioFile.muted) {
+                        audioFile.muted = false;
+                        $(this).attr("src", "images/unmute.png");
+                        $(this).attr("title", "Mute Sound");
+                        audioFile.play(); // Resume playing if muted
+                    } else {
+                        audioFile.muted = true;
+                        $(this).attr("src", "images/mute.png");
+                        $(this).attr("title", "Unmute Sound");
+                    }
+                }
+            });
+
+            // Automatically play audio after user interaction with the page
+            $(document).one('click', function() {
+                LoadAudio(0); // Load and play audio on first user interaction
+                $("#play-audio-btn").hide(); // Hide the play button after the first interaction
+            });
+        });
 
             $(document).on('focusin', 'input[type="text"]', function (event) {
                 $("#showAnswer").css("display", "none");
@@ -2522,35 +2534,33 @@
 
 var audioFile; // Global variable to hold the audio object
 
-function LoadAudio(pageNumber) {
-var AudioFileName = arrQuestionObjectsMaster[pageNumber].SoundFile;
+var audioFile; // Global variable to hold the audio object
 
-// If there's an existing audio object, pause and reset it
-if (audioFile) {
-audioFile.pause();
-audioFile.currentTime = 0;
-}
+        function LoadAudio(pageNumber) {
+            var AudioFileName = arrQuestionObjectsMaster[pageNumber].SoundFile;
 
-// Create a new audio object and set it to the global variable
-audioFile = new Audio(AudioFileName);
-audioFile.volume = 1.0;
+            // If there's an existing audio object, pause and reset it
+            if (audioFile) {
+                audioFile.pause();
+                audioFile.currentTime = 0;
+            }
 
-// Ensure the audio starts playing automatically
-setTimeout(() => { // Introduce a slight delay to avoid play/pause conflicts
-audioFile.play().then(() => {
-    // Set the initial mute/unmute button based on the audio's muted state
-    if (audioFile.muted) {
-        $("#imgmute").attr("src", "images/mute.png");
-        $("#imgmute").attr("title", "Unmute Sound");
-    } else {
-        $("#imgmute").attr("src", "images/unmute.png");
-        $("#imgmute").attr("title", "Mute Sound");
-    }
-}).catch((error) => {
-    console.error("Audio playback failed:", error);
-});
-}, 50); // 50ms delay before attempting to play the audio
-}
+            // Create a new audio object and set it to the global variable
+            audioFile = new Audio(AudioFileName);
+            audioFile.volume = 1.0;
+
+            // Play the audio
+            audioFile.play().then(() => {
+                console.log("Audio is playing.");
+                $("#imgmute").show(); // Show mute/unmute button
+            }).catch((error) => {
+                console.error("Audio playback failed:", error);
+            });
+
+            // Set the initial mute/unmute button state
+            $("#imgmute").attr("src", "images/unmute.png");
+            $("#imgmute").attr("title", "Mute Sound");
+        }
 
         var questionIndex = 0;
         function buildContentLoad(pageNumber, usedIn) {
